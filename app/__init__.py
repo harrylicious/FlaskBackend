@@ -1,12 +1,14 @@
 import logging
 from flask import Flask # dari modul flask, import class Flask
 from flask_restful import Api
+from flask_cors import CORS
 from flask_marshmallow import Marshmallow
 from psycopg2 import pool
 from psycopg2.extras import RealDictCursor
 
 app = Flask(__name__) # inisiasi flask instance
 api = Api(app) # dari flask-restful, library untuk membuat REST API menggunakan flask
+cors = CORS(app, resources={r"*":{"origins":"*"}})
 ma = Marshmallow(app) # marshmallow adalah library untuk melakukan serialisasi/deserialisasi object
 rdc = RealDictCursor
 

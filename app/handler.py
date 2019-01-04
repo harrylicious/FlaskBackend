@@ -1,5 +1,7 @@
+import traceback
 from flask_restful import Resource
 from flask import request
+
 
 from app.models import Demo
 from app import logger
@@ -45,10 +47,14 @@ class DemoCrudHandler(Resource):
     def post(self):
         try:
             # data yang diterima dikirim dalam format 'application/json'
+            print('Tesssssssss')
+            #logger.debug('Request: '+ request)
             data = request.get_json(force=True)
+            logger.debug('Request: '+ str(data))
             obj = self.model.insert(data)
             return obj
         except Exception as e:
+            print(traceback.print_exc())
             pesan_error = 'Ooops, ada yang salah ' + str(e)
             return {'pesan':pesan_error}, 400
 

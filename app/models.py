@@ -44,13 +44,14 @@ class Demo(ma.Schema):
                 cur.close()
             finally:
                 pg_pool.putconn(conn)
-            return result.data
+            return result.data 
 
         except Exception as e:
             raise RuntimeError('oops on demo: '+str(e)) from e
     
     def insert(self,data):
         try:
+            logger.debug(data)
             sql_str = (
                 'insert into demo' 
                 '(judul,deskripsi)'
