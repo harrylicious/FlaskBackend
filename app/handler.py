@@ -4,6 +4,8 @@ from flask import request
 
 
 from app.models import Demo
+from app.model_pembeli import Pembeli
+from app.model_produk import Produk
 from app import logger
 
 class HelloWorldHandler(Resource): # REST request handler
@@ -78,3 +80,105 @@ class DemoCrudHandler(Resource):
             pesan_error = 'Ooops, ada yang salah ' + str(e)
             return {'pesan':pesan_error}, 400 
 
+
+class PembeliHandler(Resource):
+    model = Pembeli() # siapkan model dari class Pembeli
+    def get(self, id=0):
+        # jika id = 0, diterjemahkan menjadi mengambil semua data 
+        # jika id > 0, akan diload data sesuai id yang bersangkutan 
+        try:
+            if id > 0:
+                obj = self.model.get_by_id(id)
+                return obj
+            else:
+                objs = self.model.get_all()
+                return objs
+
+        except Exception as e:
+            pesan_error = 'Ooops, ada yang salah ' + str(e)
+            return {'pesan':pesan_error}, 400 
+
+    def post(self):
+        try:
+            # data yang diterima dikirim dalam format 'application/json'
+            print('Tesssssssss')
+            #logger.debug('Request: '+ request)
+            data = request.get_json(force=True)
+            logger.debug('Request: '+ str(data))
+            obj = self.model.insert(data)
+            return obj
+        except Exception as e:
+            print(traceback.print_exc())
+            pesan_error = 'Ooops, ada yang salah ' + str(e)
+            return {'pesan':pesan_error}, 400
+
+    def put(self):
+        try:
+            # data yang diterima dikirim dalam format 'application/json'
+            data = request.get_json(force=True)
+            obj = self.model.update(data)
+            return obj
+        except Exception as e:
+            pesan_error = 'Ooops, ada yang salah ' + str(e)
+            return {'pesan':pesan_error}, 400 
+
+    def delete(self):
+        try:     
+            data = request.get_json(force=True)
+            id = data['id']
+            obj = self.model.delete(id)
+            return obj
+        except Exception as e:
+            pesan_error = 'Ooops, ada yang salah ' + str(e)
+            return {'pesan':pesan_error}, 400 
+
+
+class ProdukHandler(Resource):
+    model = Produk() # siapkan model dari class Produk
+    def get(self, id=0):
+        # jika id = 0, diterjemahkan menjadi mengambil semua data 
+        # jika id > 0, akan diload data sesuai id yang bersangkutan 
+        try:
+            if id > 0:
+                obj = self.model.get_by_id(id)
+                return obj
+            else:
+                objs = self.model.get_all()
+                return objs
+
+        except Exception as e:
+            pesan_error = 'Ooops, ada yang salah ' + str(e)
+            return {'pesan':pesan_error}, 400 
+
+    def post(self):
+        try:
+            # data yang diterima dikirim dalam format 'application/json'
+            #logger.debug('Request: '+ request)
+            data = request.get_json(force=True)
+            logger.debug('Request: '+ str(data))
+            obj = self.model.insert(data)
+            return obj
+        except Exception as e:
+            print(traceback.print_exc())
+            pesan_error = 'Ooops, ada yang salah ' + str(e)
+            return {'pesan':pesan_error}, 400
+
+    def put(self):
+        try:
+            # data yang diterima dikirim dalam format 'application/json'
+            data = request.get_json(force=True)
+            obj = self.model.update(data)
+            return obj
+        except Exception as e:
+            pesan_error = 'Ooops, ada yang salah ' + str(e)
+            return {'pesan':pesan_error}, 400 
+
+    def delete(self):
+        try:     
+            data = request.get_json(force=True)
+            id = data['id']
+            obj = self.model.delete(id)
+            return obj
+        except Exception as e:
+            pesan_error = 'Ooops, ada yang salah ' + str(e)
+            return {'pesan':pesan_error}, 400 
